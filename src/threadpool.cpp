@@ -23,7 +23,6 @@ ThreadPool::ThreadPool(size_t init_size) :running_(true),
  * 需要回收所有所使用的资源
 */
 ThreadPool::~ThreadPool() {
-    printf("pool destructor\n");
     this->stop();
     // 任务也要delete掉
     // 任务队列可能已经为空

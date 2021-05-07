@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <pthread.h>
 #include <string>
 #include <cstring>
@@ -11,12 +12,16 @@ using namespace std;
 class PrintTask: public Task {
     public:
         PrintTask(const string& name) :Task(name) {}
+        PrintTask(const string& name, void* args): Task(name, args) {}
         virtual ~PrintTask() {}
         void run() {
             int i = 0;
+            char* str = (char*) get_args();
+            string s1(str);
             while (i < 3)
             {
-                printf("%s in thread %lu is running\n", get_name().c_str(), pthread_self());
+                s1 += "olele";
+                printf("%s in thread %lu is running, say %s to you\n", get_name().c_str(), pthread_self(), s1.c_str());
                 usleep(10000);
                 i ++;
             }
@@ -28,15 +33,13 @@ class PrintTask: public Task {
 
 int main(int argc, char const *argv[])
 {
-    ThreadPool pool(15);
+    ThreadPool pool(3);
     // 添加10个任务
     string base_name = "task-";
-    
-    for (int i = 0; i < 10; i ++) {
+    char* strs[] = {"wonderful", "hello world", "ok", "let's go", "cpp is cool"};
+    for (int i = 0; i < 5; i ++) {
         string name = base_name + to_string(i);
-        // PrintTask task(name);
-        PrintTask* task = new PrintTask(name);
-        // task.set_name(name);
+        PrintTask* task = new PrintTask(name, (void*)(strs[i]));
         pool.add_task(task);
     }
 

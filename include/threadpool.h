@@ -23,15 +23,20 @@ using std::deque;
 */
 class Task {
     private:
-        string name_;
+        string name_;   // 任务的名字
+        void* args_;    // 任务携带的参数
     
     public:
         Task(const string& name) : name_(name) {}
+        Task(const string& name, void* args): name_(name), args_(args) {}
         virtual ~Task() {}; // 注意要定义虚析构，以通过父类指针释放子类资源
 
     public:
         string get_name() const {return name_;}
         void set_name(const string& name) {name_ = name;}
+        void set_args(void* args) {args_ = args;}
+        void* get_args() const {return args_;}
+
         virtual void run() = 0;
 };
 
