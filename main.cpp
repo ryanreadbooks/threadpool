@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
     char* strs[] = {"wonderful", "hello world", "ok", "let's go", "cpp is cool"};
     for (int i = 0; i < 5; i ++) {
         string name = base_name + to_string(i);
-        PrintTask* task = new PrintTask(name, (void*)(strs[i]));
+        PrintTask* task = new PrintTask(name, (void*)(strs[i]));    // 必须用指针，因为里面用了多态
         pool.add_task(task);
     }
 
